@@ -1,0 +1,1 @@
+npm config set sass_binary_site https://npm.taobao.org/mirrors/node-sass/ && npm install && npm run build:prod && rm -rf ./node_modules && rm -rf ./src

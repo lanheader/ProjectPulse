@@ -1,0 +1,62 @@
+/* 基本变量，文字颜色，尺寸等 */
+$theme-color: #5406C5;
+
+$theme-bg-color: #f2f0f8;
+
+$body-bg: #FFF;
+
+$main-width: 1200px;
+
+$border-color: #DDD;
+
+$table-header-color: #eff3f8;
+
+
+$pointColor: #f71b9b;
+
+$successColor: #6acf55;
+
+$stressColor: #ff6a00;
+
+$weakColor: #c2c2c2;
+
+$white: #fff;
+
+$black: #000;
+
+
+// base color
+$blue:#324157;
+$light-blue:#3A71A8;
+$red:#C03639;
+$pink: #E65D6E;
+$green: #30B08F;
+$tiffany: #4AB7BD;
+$yellow:#FEC171;
+$panGreen: #30B08F;
+
+// sidebar
+$menuText:#000;
+$menuActiveText:#5406C5;
+$subMenuActiveText:#000;
+
+$menuBg:#fff;
+$menuHover:#ede6f7;
+
+$subMenuBg:#fff;
+$subMenuHover:#ede6f7;
+
+$sideBarWidth: 210px;
+
+// the :export directive is the magic sauce for webpack
+// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
+:export {
+  menuText: $menuText;
+  menuActiveText: $menuActiveText;
+  subMenuActiveText: $subMenuActiveText;
+  menuBg: $menuBg;
+  menuHover: $menuHover;
+  subMenuBg: $subMenuBg;
+  subMenuHover: $subMenuHover;
+  sideBarWidth: $sideBarWidth;
+}

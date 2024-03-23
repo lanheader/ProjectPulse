@@ -1,0 +1,103 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="HtmlUnknownTag" enabled="false" level="WARNING" enabled_by_default="false">
+      <option name="myValues">
+        <value>
+          <list size="6">
+            <item index="0" class="java.lang.String" itemvalue="nobr" />
+            <item index="1" class="java.lang.String" itemvalue="noembed" />
+            <item index="2" class="java.lang.String" itemvalue="comment" />
+            <item index="3" class="java.lang.String" itemvalue="noscript" />
+            <item index="4" class="java.lang.String" itemvalue="embed" />
+            <item index="5" class="java.lang.String" itemvalue="script" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
+    <inspection_tool class="PyAttributeOutsideInitInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="56">
+            <item index="0" class="java.lang.String" itemvalue="pyodbc" />
+            <item index="1" class="java.lang.String" itemvalue="uwsgi" />
+            <item index="2" class="java.lang.String" itemvalue="simplejson" />
+            <item index="3" class="java.lang.String" itemvalue="pandas" />
+            <item index="4" class="java.lang.String" itemvalue="mozilla-django-oidc" />
+            <item index="5" class="java.lang.String" itemvalue="Django" />
+            <item index="6" class="java.lang.String" itemvalue="psycopg2-binary" />
+            <item index="7" class="java.lang.String" itemvalue="pillow" />
+            <item index="8" class="java.lang.String" itemvalue="tencentcloud-sdk-python" />
+            <item index="9" class="java.lang.String" itemvalue="aliyunsdkcore" />
+            <item index="10" class="java.lang.String" itemvalue="tencentcloud-sdk-python-redis-3.0.986" />
+            <item index="11" class="java.lang.String" itemvalue="tencentcloud-sdk-python-mongodb-3.0.986" />
+            <item index="12" class="java.lang.String" itemvalue="tencentcloud-sdk-python-vpc" />
+            <item index="13" class="java.lang.String" itemvalue="tencentcloud-sdk-python-cdb" />
+            <item index="14" class="java.lang.String" itemvalue="huaweicloudsdkvpc" />
+            <item index="15" class="java.lang.String" itemvalue="huaweicloudsdkrds" />
+            <item index="16" class="java.lang.String" itemvalue="mysqlclient" />
+            <item index="17" class="java.lang.String" itemvalue="alibabacloud_dysmsapi20170525" />
+            <item index="18" class="java.lang.String" itemvalue="schema-sync" />
+            <item index="19" class="java.lang.String" itemvalue="django-environ" />
+            <item index="20" class="java.lang.String" itemvalue="aliyun-python-sdk-rds" />
+            <item index="21" class="java.lang.String" itemvalue="qrcode" />
+            <item index="22" class="java.lang.String" itemvalue="python-dateutil" />
+            <item index="23" class="java.lang.String" itemvalue="mysql-replication" />
+            <item index="24" class="java.lang.String" itemvalue="cx-Oracle" />
+            <item index="25" class="java.lang.String" itemvalue="requests" />
+            <item index="26" class="java.lang.String" itemvalue="redis" />
+            <item index="27" class="java.lang.String" itemvalue="parsedatetime" />
+            <item index="28" class="java.lang.String" itemvalue="drf-spectacular" />
+            <item index="29" class="java.lang.String" itemvalue="pymysql" />
+            <item index="30" class="java.lang.String" itemvalue="djangorestframework-simplejwt" />
+            <item index="31" class="java.lang.String" itemvalue="tencentcloud-sdk-python-redis" />
+            <item index="32" class="java.lang.String" itemvalue="aliyun-python-sdk-dds" />
+            <item index="33" class="java.lang.String" itemvalue="pyecharts" />
+            <item index="34" class="java.lang.String" itemvalue="phoenixdb" />
+            <item index="35" class="java.lang.String" itemvalue="pyodps" />
+            <item index="36" class="java.lang.String" itemvalue="django-mirage-field" />
+            <item index="37" class="java.lang.String" itemvalue="djangorestframework" />
+            <item index="38" class="java.lang.String" itemvalue="pyotp" />
+            <item index="39" class="java.lang.String" itemvalue="pymongo" />
+            <item index="40" class="java.lang.String" itemvalue="xlsxwriter" />
+            <item index="41" class="java.lang.String" itemvalue="gunicorn" />
+            <item index="42" class="java.lang.String" itemvalue="aliyun-python-sdk-r-kvstore" />
+            <item index="43" class="java.lang.String" itemvalue="clickhouse-driver" />
+            <item index="44" class="java.lang.String" itemvalue="django-q" />
+            <item index="45" class="java.lang.String" itemvalue="django-cas-ng" />
+            <item index="46" class="java.lang.String" itemvalue="sshtunnel" />
+            <item index="47" class="java.lang.String" itemvalue="django-filter" />
+            <item index="48" class="java.lang.String" itemvalue="django-redis" />
+            <item index="49" class="java.lang.String" itemvalue="tencentcloud-sdk-python-mongodb" />
+            <item index="50" class="java.lang.String" itemvalue="mybatis_mapper2sql" />
+            <item index="51" class="java.lang.String" itemvalue="pycryptodome" />
+            <item index="52" class="java.lang.String" itemvalue="supervisor" />
+            <item index="53" class="java.lang.String" itemvalue="django-auth-ldap" />
+            <item index="54" class="java.lang.String" itemvalue="django-auth-dingding" />
+            <item index="55" class="java.lang.String" itemvalue="huaweicloudsdkcore" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N802" />
+          <option value="N806" />
+          <option value="N803" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="NameError.*" />
+          <option value="object.*" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
