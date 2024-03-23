@@ -1,6 +1,6 @@
 <template>
   <div class="console-mian-dashbord">
-    <p style="color:#ececec;font-size:70px">欢迎使用G7E6 Laplace</p>
+    <p style="color:#ececec;font-size:70px">欢迎使用ProjectPulse项目管理系统</p>
   </div>
 </template>
 

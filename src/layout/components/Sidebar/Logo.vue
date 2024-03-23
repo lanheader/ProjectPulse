@@ -17,7 +17,7 @@
           class="sidebar-logo"
           alt=""
         >
-        <span class="ml-5 fz-20 fb text">Laplace</span>
+        <span class="ml-5 fz-20 fb text">ProjectPulse</span>
         <p class="ml-10 mr-10 split text" />
       </router-link>
     </transition>
@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      title: 'Laplace',
+      title: 'ProjectPulse',
       logo: '@/assets/G7E6_Symbol_RGB_FullColor.png'
     }
   }

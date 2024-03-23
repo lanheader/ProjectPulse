@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'Laplace',
+  title: 'ProjectPulse',
 
   /**
    * @type {boolean} true | false
