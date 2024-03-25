@@ -32,7 +32,7 @@
             size="small"
             style="font-size: 12px; position: relative; top: -3px; left: 5px"
           >
-            {{ userInfo? userInfo.name.slice(-2) : '未登录' }}
+            {{ userInfo? userInfo.username : '未登录' }}
           </el-avatar>
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">

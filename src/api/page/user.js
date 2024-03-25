@@ -1,14 +1,15 @@
 import request from '@/utils/request'
 
-export function login() {
+export function login(data) {
   return request({
-    url: '/console/user/login',
-    method: 'get'
+    url: '/api/login/',
+    method: 'post',
+    data
   })
 }
 
 // 接口
-export function userinfo() {
+export function getInfo() {
   return request({
     url: '/console/user/info',
     method: 'get'

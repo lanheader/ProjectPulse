@@ -1,4 +1,4 @@
-import { login, userinfo } from '@/api/page/user.js'
+import { login, getInfo } from '@/api/page/user.js'
 import { ProjectList } from '@/api/page/workSpace.js'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
@@ -53,10 +53,14 @@ const actions = {
       })
     })
   },
-  // 登录接口
-  login({ commit }) {
+  // user login
+  login({ commit }, userInfo) {
+    const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login().then(response => {
+      login({ username: username.trim(), password: password }).then(response => {
+        const { data } = response
+        commit('SET_TOKEN', data.access)
+        setToken(data.access)
         resolve()
       }).catch(error => {
         reject(error)
@@ -64,18 +68,28 @@ const actions = {
     })
   },
 
-  // 获取用户信息
+  // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      userinfo().then(response => {
+      getInfo(state.token).then(response => {
         const { data } = response
+
         if (!data) {
-          reject('未获取到用户信息，请重新登录后再试！')
+          reject('Verification failed, please Login again.')
+        }
+
+        const { roles, username, first_name, last_name, avatar, introduction } = data
+
+        // roles must be a non-empty array
+        if (!roles || roles.length <= 0) {
+          reject('getInfo: roles must be a non-null array!')
         }
         commit('SET_USERINFO', data)
-        commit('SET_ROLES', [data['type']])
-        commit('SET_NAME', data['username'])
-        resolve(data['user_type'])
+        commit('SET_ROLES', roles)
+        commit('SET_NAME', first_name + last_name)
+        commit('SET_AVATAR', avatar)
+        commit('SET_INTRODUCTION', introduction)
+        resolve(data)
       }).catch(error => {
         reject(error)
       })
@@ -101,14 +115,15 @@ const actions = {
 
     resetRouter()
 
-    // 根据角色生成可访问路由映射
+    // generate accessible routes map based on roles
     const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
-    // 动态添加可访问路由
+    // dynamically add accessible routes
     router.addRoutes(accessRoutes)
 
-    // 重置访问过的视图和缓存的视图
+    // reset visited views and cached views
     dispatch('tagsView/delAllViews', null, { root: true })
   }
+
 }
 
 export default {
