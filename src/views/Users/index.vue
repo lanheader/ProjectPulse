@@ -63,7 +63,7 @@
 <script>
 import LaplaceTable from '@/components/Table/index.vue'
 import column from '@/views/Users/js/column'
-import { MemberCreate, MemberDelete, MemberList, UserList } from '@/api/page/workSpace'
+import { MemberCreate, MemberDelete, MemberList, UserList } from '@/api/page/projects'
 import { mapGetters } from 'vuex'
 export default {
   components: {
@@ -90,7 +90,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userInfo'])
+    ...mapGetters(['userinfo'])
   },
   mounted() {
     this.initData()
@@ -99,8 +99,8 @@ export default {
     // 获取项目成员列表
     async initData() {
       // 获取当前项目
-      this.currentProject = JSON.parse(sessionStorage.getItem('CurrentWorkSpace'))
-      const res = await MemberList({
+      this.currentProject = JSON.parse(sessionStorage.getItem('CurrentProject'))
+      const res = await UserList({
         projectId: this.currentProject.id,
         pageSize: this.pageSize,
         pageNo: this.pageNo
@@ -109,7 +109,7 @@ export default {
       if (res.data.data === null) {
         this.tableData = []
       } else {
-        this.tableData = res.data.data
+        this.tableData = res.data
       }
       // 如果data.totalSize为null 则赋值为0
       if (res.data.totalSize === null) {

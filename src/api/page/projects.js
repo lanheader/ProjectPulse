@@ -3,7 +3,7 @@ import request from '@/utils/request.js'
 // 用户列表
 export function UserList() {
   return request({
-    url: '/console/user/',
+    url: '/api/projectUsers/',
     method: 'get'
   })
 }
@@ -44,7 +44,7 @@ export function MemberDelete(params) {
 // 获取项目列表
 export function ProjectList() {
   return request({
-    url: '/console/project/',
+    url: '/api/project/',
     method: 'get'
   })
 }

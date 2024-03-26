@@ -11,8 +11,14 @@ export function login(data) {
 // 接口
 export function getInfo() {
   return request({
-    url: '/console/user/info',
+    url: '/api/user/info',
     method: 'get'
   })
 }
 
+export function logout() {
+  return request({
+    url: '/vue-element-admin/user/logout',
+    method: 'post'
+  })
+}

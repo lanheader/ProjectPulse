@@ -169,7 +169,7 @@ import {
   AKList,
   TenantList,
   TenantCreate
-} from '@/api/page/workSpace.js'
+} from '@/api/page/projects.js'
 import { mapGetters } from 'vuex'
 import { _formatDate } from '@/utils/validate.js'
 

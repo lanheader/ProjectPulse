@@ -192,7 +192,7 @@ import Pagination from '@/components/Pagination'
 import { SmsDetail } from '@/api/page/message.js'
 import {
   AKList
-} from '@/api/page/workSpace.js'
+} from '@/api/page/projects.js'
 
 export default {
   meta: {

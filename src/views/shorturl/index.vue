@@ -171,7 +171,7 @@ import column from '@/views/shorturl/js/column'
 import { expirePickerOptions, createPickerOptions } from '@/views/shorturl/js/utils'
 import Search from '@/views/shorturl/components/searchForm.vue'
 
-import { AKList } from '@/api/page/workSpace'
+import { AKList } from '@/api/page/projects'
 import { ShortUrlDisable, ShortUrlList, ShortUrlUpdate, ShortUrlCreate } from '@/api/page/shorturl'
 import { mapGetters } from 'vuex'
 export default {

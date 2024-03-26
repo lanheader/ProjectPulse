@@ -433,7 +433,7 @@ import {
   AKAPIClose,
   AKAPIOpening,
   AKAPIAdjustment
-} from '@/api/page/workSpace.js'
+} from '@/api/page/projects.js'
 import { mapGetters } from 'vuex'
 
 export default {

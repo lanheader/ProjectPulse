@@ -9,7 +9,7 @@ const column = [
   },
   {
     label: '姓名',
-    name: 'name',
+    name: 'display',
     fixed: 'left',
     align: 'center',
     overflow: true
@@ -22,8 +22,15 @@ const column = [
     overflow: true
   },
   {
-    label: '部门',
-    name: 'deptName',
+    label: '角色',
+    name: 'role',
+    fixed: 'left',
+    align: 'center',
+    overflow: true
+  },
+  {
+    label: '手机',
+    name: 'phone',
     fixed: 'left',
     align: 'center',
     overflow: true

@@ -8,17 +8,17 @@
       />
       <el-tooltip class="item" effect="dark" :content="tips" placement="top-start">
         <el-select
-          v-model="workSpace.id"
+          v-model="project.id"
           placeholder="请选择项目"
           filterable
           style="width: 200px"
-          class="workspace"
+          class="project"
           @change="handleCommand"
         >
           <el-option
-            v-for="(item, index) in workSpaces"
+            v-for="(item, index) in projects"
             :key="index"
-            :label="item.name"
+            :label="item.project_name"
             :value="item.id"
           />
         </el-select>
@@ -28,11 +28,11 @@
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <el-avatar
-            v-if="userInfo"
+            v-if="userinfo"
             size="small"
             style="font-size: 12px; position: relative; top: -3px; left: 5px"
           >
-            {{ userInfo? userInfo.username : '未登录' }}
+            {{ userinfo? userinfo.name : userinfo.username }}
           </el-avatar>
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -55,37 +55,37 @@ export default {
   },
   data() {
     return {
-      workSpace: {},
-      tips: JSON.parse(sessionStorage.getItem('CurrentWorkSpace'))
-        ? JSON.parse(sessionStorage.getItem('CurrentWorkSpace')).name
+      project: {},
+      tips: JSON.parse(sessionStorage.getItem('CurrentProject'))
+        ? JSON.parse(sessionStorage.getItem('CurrentProject')).name
         : ''
     }
   },
   computed: {
-    ...mapGetters(['userInfo', 'sidebar', 'avatar', 'workSpaces'])
+    ...mapGetters(['userinfo', 'sidebar', 'avatar', 'projects'])
   },
   mounted() {
     // 判断workSpace不为空并且是数组
-    if (this.workSpaces && Array.isArray(this.workSpaces)) {
-      if (this.workSpaces.length > 0) {
+    if (this.projects && Array.isArray(this.projects)) {
+      if (this.projects.length > 0) {
         // 判断sessionStorage中是否有项目，并且项目是否存在于workSpaces中
         if (
-          sessionStorage.getItem('CurrentWorkSpace') &&
-          this.workSpaces.filter(
+          sessionStorage.getItem('CurrentProject') &&
+          this.projects.filter(
             (item) =>
-              item.name ===
-              JSON.parse(sessionStorage.getItem('CurrentWorkSpace')).name
+              item.project_name ===
+              JSON.parse(sessionStorage.getItem('CurrentProject')).project_name
           ).length > 0
         ) {
-          this.workSpace = JSON.parse(
-            sessionStorage.getItem('CurrentWorkSpace')
+          this.project = JSON.parse(
+            sessionStorage.getItem('CurrentProject')
           )
         } else {
-          this.workSpace = this.workSpaces[0]
+          this.project = this.projects[0]
           // 将当前项目存入sessionStorage
           sessionStorage.setItem(
-            'CurrentWorkSpace',
-            JSON.stringify(this.workSpace)
+            'CurrentProject',
+            JSON.stringify(this.project)
           )
         }
       } else {
@@ -101,14 +101,14 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     handleCommand(value) {
-      this.workSpace = this.workSpaces.find((item) => item.id === value)
+      this.project = this.projects.find((item) => item.id === value)
       this.$message({
-        message: '切换项目至 ' + this.workSpace.name,
+        message: '切换项目至 ' + this.project.project_name,
         type: 'success'
       })
       sessionStorage.setItem(
-        'CurrentWorkSpace',
-        JSON.stringify(this.workSpace)
+        'CurrentProject',
+        JSON.stringify(this.project)
       )
       location.reload()
     },
@@ -154,7 +154,7 @@ export default {
   .breadcrumb-container {
     float: left;
   }
-  .workspace {
+  .project {
     .el-select-dropdown__item {
       text-align: center;
     }
