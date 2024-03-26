@@ -22,3 +22,19 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function UserList(params) {
+  return request({
+    url: '/api/users/',
+    method: 'get',
+    params: params
+  })
+}
+export function RoleList(params) {
+  return request({
+    url: '/api/role/',
+    method: 'get',
+    params: params
+  })
+}
+

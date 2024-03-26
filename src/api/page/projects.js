@@ -1,10 +1,20 @@
 import request from '@/utils/request.js'
 
 // 用户列表
-export function UserList() {
+export function RoleUserList(params) {
   return request({
     url: '/api/projectUsers/',
-    method: 'get'
+    method: 'get',
+    params: params
+  })
+}
+
+// 创建用户
+export function RoleUserSubmit(data) {
+  return request({
+    url: '/api/projectUsers/',
+    method: 'post',
+    data: data
   })
 }
 
@@ -36,7 +46,7 @@ export function MemberCreate(params) {
 // 添加项目成员
 export function MemberDelete(params) {
   return request({
-    url: `/console/project/member/${params['projectId']}/${params['userId']}`,
+    url: `/api/projectrolesusers/${params.id}/`,
     method: 'delete'
   })
 }

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
-import { getToken } from '@/utils/auth'
+import { getToken, getCookie } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
@@ -28,6 +28,7 @@ service.interceptors.request.use(
       config.headers.Authorization = getToken()
     }
     config.headers['Content-Type'] = 'application/json'
+    config.headers['X-CSRFToken'] = getCookie()
     return config
   },
   error => {

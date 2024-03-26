@@ -44,8 +44,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
-        commit('SET_TOKEN', data.access)
-        setToken(data.access)
+        commit('SET_TOKEN', data.data.access)
+        setToken(data.data.access)
         resolve()
       }).catch(error => {
         reject(error)
@@ -136,8 +136,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       ProjectList().then(response => {
         const { data } = response
-        commit('SET_PROJECTS', data)
-        resolve(data)
+        commit('SET_PROJECTS', data.data)
+        resolve(data.data)
       }).catch(error => {
         reject(error)
       })

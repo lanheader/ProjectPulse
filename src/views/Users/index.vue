@@ -15,6 +15,7 @@
               <el-button
                 type="primary"
                 icon="el-icon-plus"
+                :loading="btnloading"
                 @click="btCreateMember"
               >新增成员</el-button>
             </el-col>
@@ -35,11 +36,20 @@
         </div>
       </el-card>
     </el-row>
+    <el-row>
+      <pagination
+        :hidden="total <= 0"
+        :total="total"
+        :page.sync="pageNo"
+        :limit.sync="pageSize"
+        @pagination="handleSizeChange"
+      />
+    </el-row>
     <el-dialog title="添加成员" :visible.sync="userDialogFormVisible">
       <el-form ref="userForm" :model="userForm" :rules="userFormRules" label-width="100px" size="mini">
-        <el-form-item label="用户" :label-width="userForm.formLabelWidth" prop="id">
+        <el-form-item label="用户" :label-width="userForm.formLabelWidth" prop="user_id">
           <el-select
-            v-model="userForm.id"
+            v-model="userForm.user_id"
             placeholder="请选择用户"
             filterable
             clearable
@@ -47,7 +57,22 @@
             <el-option
               v-for="item in usersList"
               :key="item.id"
-              :label="item.name"
+              :label="item.username"
+              :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="角色" :label-width="userForm.formLabelWidth" prop="role_id">
+          <el-select
+            v-model="userForm.role_id"
+            placeholder="请选择角色"
+            filterable
+            clearable
+          >
+            <el-option
+              v-for="item in roleList"
+              :key="item.id"
+              :label="item.role_name"
               :value="item.id"
             />
           </el-select>
@@ -62,12 +87,15 @@
 </template>
 <script>
 import LaplaceTable from '@/components/Table/index.vue'
+import Pagination from '@/components/Pagination'
 import column from '@/views/Users/js/column'
-import { MemberCreate, MemberDelete, MemberList, UserList } from '@/api/page/projects'
+import { MemberDelete, RoleUserList, RoleUserSubmit } from '@/api/page/projects'
+import { UserList, RoleList } from '@/api/page/user'
 import { mapGetters } from 'vuex'
 export default {
   components: {
-    LaplaceTable
+    LaplaceTable,
+    Pagination
   },
   data() {
     return {
@@ -78,9 +106,14 @@ export default {
       pageNo: 1,
       userDialogFormVisible: false,
       usersList: [],
+      roleList: [],
+      btnloading: false,
       userFormRules: {
-        id: [
-          { required: true, message: '请选择用户类型', trigger: 'change' }
+        user_id: [
+          { required: true, message: '请选择用户', trigger: 'change' }
+        ],
+        role_id: [
+          { required: true, message: '请选择角色', trigger: 'change' }
         ]
       },
       userForm: {
@@ -100,31 +133,62 @@ export default {
     async initData() {
       // 获取当前项目
       this.currentProject = JSON.parse(sessionStorage.getItem('CurrentProject'))
-      const res = await UserList({
+      const res = await RoleUserList({
         projectId: this.currentProject.id,
-        pageSize: this.pageSize,
-        pageNo: this.pageNo
+        size: this.pageSize,
+        page: this.pageNo
       })
 
       if (res.data.data === null) {
         this.tableData = []
       } else {
-        this.tableData = res.data
+        this.tableData = res.data.data
       }
       // 如果data.totalSize为null 则赋值为0
-      if (res.data.totalSize === null) {
+      if (res.data.count === null) {
         res.data.totalSize = 0
       } else {
-        this.total = res.data.totalSize
+        this.total = res.data.count
+      }
+    },
+    // 获取用户列表
+    async getUserList() {
+      const res = await UserList({
+        size: 1000,
+        page: 1
+      })
+      if (res.code === 20000) {
+        this.usersList = res.data.data
+      } else {
+        this.$message({
+          message: '接口错误',
+          type: 'error'
+        })
+      }
+    },
+    // 获取角色列表
+    async getRoleList() {
+      const res = await RoleList({
+        size: 1000,
+        page: 1
+      })
+      if (res.code === 20000) {
+        this.roleList = res.data.data
+      } else {
+        this.$message({
+          message: '接口错误',
+          type: 'error'
+        })
       }
     },
     // 新增项目成员
     async createMember() {
-      const res = await MemberCreate({
-        projectId: this.currentProject.id,
-        userId: this.userForm.id
+      const res = await RoleUserSubmit({
+        project_id: this.currentProject.id,
+        user_id: this.userForm.user_id,
+        role_id: this.userForm.role_id
       })
-      if (res.code === 0) {
+      if (res.code === 20000) {
         this.$message({
           message: '新增成功',
           type: 'success'
@@ -132,7 +196,7 @@ export default {
         this.userDialogFormVisible = false
       } else {
         this.$message({
-          message: '新增失败',
+          message: res.data.message,
           type: 'error'
         })
       }
@@ -140,17 +204,12 @@ export default {
     },
     // 新增成员，按钮点击时获取项目成员列表
     async btCreateMember() {
+      this.btnloading = true
+      await this.getUserList()
+      await this.getRoleList()
       this.userDialogFormVisible = true
       this.userForm.id = null
-      const res = await UserList()
-      if (res.code === 0) {
-        this.usersList = res.data
-      } else {
-        this.$message({
-          message: '接口错误',
-          type: 'error'
-        })
-      }
+      this.btnloading = false
     },
     // 表单提交,新增项目成员
     onSubmit(userForm) {
@@ -167,6 +226,7 @@ export default {
         }
       })
     },
+
     btDeleteMember(row) {
       this.$confirm(`是否要移除用户【${row.name}】在项目【${this.currentProject.name}】？`, '确认信息', {
         distinguishCancelAndClose: true,
@@ -175,10 +235,9 @@ export default {
       })
         .then(async() => {
           const res = await MemberDelete({
-            projectId: this.currentProject.id,
-            userId: row.id
+            id: row.id
           })
-          if (res.code === 0) {
+          if (res.code === 20000) {
             this.$message({
               message: '删除成功',
               type: 'success'
@@ -199,11 +258,13 @@ export default {
               : '停留在当前页面'
           })
         })
+    },
+    // 页面大小变化或者页码变化时触发
+    handleSizeChange() {
+      this.initData()
     }
-  },
-  handleSizeChange() {
-    this.initData()
   }
+
 }
 </script>
 
