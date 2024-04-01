@@ -32,7 +32,7 @@
             size="small"
             style="font-size: 12px; position: relative; top: -3px; left: 5px"
           >
-            {{ userinfo? userinfo.name : userinfo.username }}
+            {{ userinfo? userinfo.username : userinfo.username }}
           </el-avatar>
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">

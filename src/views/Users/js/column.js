@@ -1,4 +1,4 @@
-import { statusOptions } from '@/views/shorturl/js/utils'
+import { statusOptions } from '@/views/Users/js/utils'
 
 const column = [
   {

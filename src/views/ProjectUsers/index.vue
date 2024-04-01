@@ -136,7 +136,7 @@ export default {
       // 获取当前项目
       this.currentProject = JSON.parse(sessionStorage.getItem('CurrentProject'))
       const res = await RoleUserList({
-        projectId: this.currentProject.id,
+        project_id: this.currentProject.id,
         size: this.pageSize,
         page: this.pageNo
       })

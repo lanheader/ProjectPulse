@@ -70,12 +70,12 @@ export const expirePickerOptions = {
 export const statusOptions = [
   {
     label: '失效',
-    value: 0,
+    value: false,
     name: 'info'
   },
   {
     label: '生效',
-    value: 1,
+    value: true,
     name: 'success'
   }
 ]

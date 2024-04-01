@@ -13,7 +13,7 @@
             <el-button
               type="primary"
               icon="el-icon-plus"
-              @click="btCreateShortUrl"
+              @click="btCreateUser"
             >新增用户</el-button>
           </el-col>
         </el-row>
@@ -22,7 +22,6 @@
         <el-row>
           <Search
             :search-form="searchForm"
-            :access-key-list="accessKeyList"
             @initData="initData"
           />
         </el-row>
@@ -33,14 +32,12 @@
           >
             <template slot-scope="scope">
               <el-button
-                v-if="scope.row.status ===1"
                 type="text"
                 @click="btDisableData(scope.row)"
-              >删除</el-button>
+              >{{ scope.row.is_active? '禁用':'启用' }}</el-button>
               <el-button
-                v-if="scope.row.status ===1"
                 type="text"
-                @click="btUpdateExpire(scope.row)"
+                @click="btUpdateUsers(scope.row)"
               >编辑</el-button>
             </template>
           </LaplaceTable>
@@ -56,111 +53,74 @@
         </el-row>
       </div>
     </el-card>
-    <el-dialog :title="title" :visible.sync="updateExpireFormVisible">
+    <el-dialog :title="title" :visible.sync="createUserFormVisible">
       <el-form
-        ref="updateExpireForm"
-        :model="updateExpireForm"
-        :rules="updateExpireFormRules"
+        ref="createUserForm"
+        :model="createUserForm"
+        :rules="createUserFormRules"
         label-width="100px"
       >
         <el-form-item
-          label="是否永久"
-          label-width="120px"
-          prop="radio"
-        >
-          <el-radio v-model="radio" :label="-1" @click.native.prevent="clickItem(-1)">{{ '' }}</el-radio>
-        </el-form-item>
-        <el-form-item
-          label="失效时间"
-          label-width="120px"
-          prop="expire"
-        >
-          <el-date-picker
-            v-model="updateExpireFormDate"
-            :disabled="dateDisable"
-            type="datetime"
-            placeholder="选择日期时间"
-            align="right"
-            :picker-options="expirePickerOptions"
-          />
-        </el-form-item>
-
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="updateExpireFormVisible = false">取 消</el-button>
-        <el-button
-          type="primary"
-          @click="updateData()"
-        >确定</el-button>
-      </div>
-    </el-dialog>
-    <el-dialog title="生成短链" :visible.sync="createShortFormVisible">
-      <el-form
-        ref="createShortForm"
-        :model="createShortForm"
-        :rules="createShortFormRules"
-        label-width="100px"
-      >
-        <el-form-item
-          label="AccessKey"
-          prop="accessKey"
-          label-width="120px"
-        >
-          <el-select
-            v-model="createShortForm.accessKey"
-            clearable
-            filterable
-            placeholder="请选择服务名"
-          >
-            <el-option
-              v-for="item in accessKeyList"
-              :key="item.id"
-              :label="item.accessKey"
-              :value="item.accessKey"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item
-          label="源地址"
-          prop="originUrl"
+          label="用户名"
+          prop="username"
           label-width="120px"
         >
           <el-input
-            v-model="createShortForm.originUrl"
-            placeholder="请输入源地址"
+            v-model="createUserForm.username"
+            placeholder="请输入用户名"
           />
         </el-form-item>
         <el-form-item
-          label="是否永久"
+          v-if="title !== '编辑用户' "
+          label="密码"
+          prop="password"
           label-width="120px"
-          prop="radio"
         >
-          <el-radio v-model="createRadio" :label="-1" @click.native.prevent="createClickItem(-1)">{{ '' }}</el-radio>
+          <el-input
+            v-model="createUserForm.password"
+            type="password"
+            placeholder="请输入密码"
+          />
         </el-form-item>
         <el-form-item
-          label="失效时间"
+          label="姓名"
           label-width="120px"
-          prop="expire"
+          prop="display"
         >
-          <el-date-picker
-            v-model="createExpireFormDate"
-            :disabled="createDateDisable"
-            type="datetime"
-            placeholder="选择日期时间"
-            align="right"
-            :picker-options="expirePickerOptions"
+          <el-input
+            v-model="createUserForm.display"
+            placeholder="请输入姓名"
+          />
+        </el-form-item>
+        <el-form-item
+          label="邮箱"
+          label-width="120px"
+          prop="email"
+        >
+          <el-input
+            v-model="createUserForm.email"
+            placeholder="请输入邮箱"
+          />
+        </el-form-item>
+        <el-form-item
+          label="手机号"
+          label-width="120px"
+          prop="phone"
+        >
+          <el-input
+            v-model="createUserForm.phone"
+            placeholder="请输入邮箱"
           />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="createShortFormVisible = false">取 消</el-button>
+        <el-button @click="createUserFormVisible = false">取 消</el-button>
         <el-button
           type="primary"
-          @click="createSubmitData()"
+          @click="submitForm()"
         >确定</el-button>
       </div>
     </el-dialog>
-
   </div>
 
 </template>
@@ -168,10 +128,9 @@
 import LaplaceTable from '@/components/Table/index.vue'
 import Pagination from '@/components/Pagination'
 import column from '@/views/Users/js/column'
-import { expirePickerOptions, createPickerOptions } from '@/views/shorturl/js/utils'
-import Search from '@/views/shorturl/components/searchForm.vue'
+import Search from '@/views/Users/components/searchForm.vue'
 
-import { UserList } from '@/api/page/user'
+import { UserDisable, UserList, UserSubmit, UserUpdate } from '@/api/page/user'
 import { mapGetters } from 'vuex'
 export default {
   name: 'UserInfo',
@@ -184,48 +143,39 @@ export default {
     return {
       // 搜索选项
       searchForm: {
-        accessKey: '',
-        date: [new Date().getTime() - 3600 * 1000 * 24 * 30, new Date().getTime()],
-        shortUrl: '',
-        originUrl: ''
+        username: '',
+        display: '',
+        phone: ''
       },
       // 新增相关
-      createShortFormVisible: false,
-      createShortForm: {
-        accessKey: '',
-        originUrl: '',
-        expire: null
-      },
-      createRadio: 0,
-      createDateDisable: false,
-      createShortFormRules: {
-        expire: [
-          { required: true, message: '请选则有效期', trigger: 'change' }
+      createUserFormVisible: false,
+      createUserFormRules: {
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'change' }
         ],
-        accessKey: [
-          { required: true, message: '请选择accessKey', trigger: 'change' }
+        password: this.title !== '编辑用户' ? [
+          { required: true, message: '请输入密码', trigger: 'change' }
+        ] : [],
+        display: [
+          { required: true, message: '请输入姓名', trigger: 'change' }
         ],
-        originUrl: [
-          { required: true, message: '请输入源地址', trigger: 'change' }
+        email: [
+          { required: true, message: '请输入邮箱', trigger: 'change' }
+        ],
+        phone: [
+          { required: true, message: '请输入手机号', trigger: 'change' }
         ]
       },
-      // 更新相关
-      updateExpireFormVisible: false,
-      updateExpireFormRules: {
-        expire: [
-          { required: true, message: '请选则有效期', trigger: 'change' }
-        ]
+      createUserForm: {
+        username: '',
+        password: '',
+        display: '',
+        email: '',
+        phone: '',
+        is_active: true
       },
-      title: '修改有效期',
-      updateExpireForm: {
-        id: null,
-        expire: null
-      },
-      radio: 0,
-      dateDisable: false,
-      expirePickerOptions: expirePickerOptions,
-      createPickerOptions: createPickerOptions,
-      accessKeyList: [],
+      title: '',
+      // table相关
       tableData: [],
       columns: column,
       total: 0,
@@ -234,27 +184,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userinfo']),
-    updateExpireFormDate: {
-      get() {
-        // 获取值时，将时间戳转换为日期对象
-        return this.updateExpireForm.expire ? new Date(this.updateExpireForm.expire) : null
-      },
-      set(value) {
-        // 设置值时，将日期对象转换为时间戳
-        this.updateExpireForm.expire = value ? value.getTime() : null
-      }
-    },
-    createExpireFormDate: {
-      get() {
-        // 获取值时，将时间戳转换为日期对象
-        return this.createShortForm.expire ? new Date(this.createShortForm.expire) : null
-      },
-      set(value) {
-        // 设置值时，将日期对象转换为时间戳
-        this.createShortForm.expire = value ? value.getTime() : null
-      }
-    }
+    ...mapGetters(['userinfo'])
   },
   mounted() {
     this.initData()
@@ -264,8 +194,11 @@ export default {
     // 获取用户列表
     async initData() {
       const params = {
-        pageSize: this.pageSize,
-        pageNo: this.pageNo
+        username: this.searchForm.username,
+        display: this.searchForm.display,
+        phone: this.searchForm.phone,
+        size: this.pageSize,
+        page: this.pageNo
       }
       const res = await UserList(params)
       this.tableData = res.data.data
@@ -277,23 +210,48 @@ export default {
       }
     },
 
-    // 提交
-    createSubmitData() {
-      this.$refs['createShortForm'].validate(async(valid, object) => {
+    // 创建
+    async createSubmitData() {
+      const res = await UserSubmit(this.createUserForm)
+      if (res.code === 20000) {
+        this.$message({
+          message: '新增成功',
+          type: 'success'
+        })
+        this.createUserFormVisible = false
+        await this.initData()
+      } else {
+        this.$message({
+          message: '新增失败',
+          type: 'error'
+        })
+      }
+    },
+    // 更新
+    async updateSubmitData() {
+      const res = await UserUpdate({ id: this.createUserForm.id, data: this.createUserForm })
+      if (res.code === 20000) {
+        this.$message({
+          message: '编辑成功',
+          type: 'success'
+        })
+        this.createUserFormVisible = false
+        await this.initData()
+      } else {
+        this.$message({
+          message: '编辑失败',
+          type: 'error'
+        })
+      }
+    },
+    // form表单提交
+    submitForm() {
+      this.$refs['createUserForm'].validate(async(valid, object) => {
         if (valid) {
-          const res = await ShortUrlCreate(this.createShortForm)
-          if (res.code === 0) {
-            this.$message({
-              message: '新增成功',
-              type: 'success'
-            })
-            this.createShortFormVisible = false
-            await this.initData()
+          if (this.title === '新增用户') {
+            await this.createSubmitData()
           } else {
-            this.$message({
-              message: '新增失败',
-              type: 'error'
-            })
+            await this.updateSubmitData()
           }
         } else {
           for (const validKey in object) {
@@ -306,108 +264,51 @@ export default {
         }
       })
     },
-    // 生成短链取消按钮
-    // 取消选中
-    createClickItem(e) {
-      e === this.createRadio ? this.createRadio = 0 : this.createRadio = e
-      if (this.createRadio === -1) {
-        this.createShortForm.expire = -1
-        this.createDateDisable = true
-      } else {
-        this.createShortForm.expire = null
-        this.createDateDisable = false
-      }
-    },
-
     // 生成短链
-    async btCreateShortUrl() {
-      if (this.searchForm.accessKey !== '') {
-        this.createRadio = 0
-        this.createDateDisable = false
-        this.createShortForm.accessKey = this.accessKeyList.find(item => item.id === this.searchForm.accessKey).accessKey
-        this.createShortForm.originUrl = ''
-        this.createShortForm.expire = null
-      } else {
-        this.createRadio = 0
-        this.createShortForm.accessKey = ''
-        this.createShortForm.originUrl = ''
-        this.createShortForm.expire = null
-        this.createDateDisable = false
-      }
-      this.createShortFormVisible = true
+    btCreateUser() {
+      this.title = '新增用户'
+      this.createUserFormVisible = true
     },
-    // 更新失效时间
-    updateData() {
-      this.$refs['updateExpireForm'].validate(async(valid, object) => {
-        if (valid) {
-          const res = await ShortUrlUpdate(this.updateExpireForm)
-          if (res.code === 0) {
-            this.$message({
-              message: '修改成功',
-              type: 'success'
-            })
-            this.updateExpireFormVisible = false
-            await this.initData()
-          } else {
-            this.$message({
-              message: '修改失败',
-              type: 'error'
-            })
-          }
-        } else {
-          for (const validKey in object) {
-            this.$message.warning(
-              object[validKey][0].message
-            )
-            break
-          }
-          return false
-        }
-      })
-    },
-
     // 更新失效时间弹窗按钮
-    btUpdateExpire(row) {
-      this.updateExpireFormVisible = true
-      this.updateExpireForm.id = row.id
-      this.updateExpireForm.expire = null
+    btUpdateUsers(row) {
+      this.title = '编辑用户'
+      this.createUserFormVisible = true
+      this.createUserForm = row
     },
 
-    // 失效按钮
+    // 禁用按钮
     btDisableData(row) {
-      this.$confirm(`确定要将此短链置为失效吗？失效后将无法访问该短链。`, '确认信息', {
+      let msg = ''
+      let res_msg = ''
+      if (row.is_active) {
+        msg = '确定要将此用户置为失效吗？失效后将无法登录。'
+        res_msg = '用户已失效'
+      } else {
+        msg = '确定要启用此用户吗？'
+        res_msg = '用户已启用'
+      }
+      this.$confirm(`${msg}`, '确认信息', {
         distinguishCancelAndClose: true,
         confirmButtonText: '确认',
         cancelButtonText: '关闭'
       }).then(async() => {
-        const res = await ShortUrlDisable(row.id)
+        const res = await UserDisable(row.id)
         this.apiDialogFormVisible = false
-        if (res.code === 0) {
+        if (res.code === 20000) {
           this.$message({
-            message: '短链已失效',
+            message: `${res_msg}`,
             type: 'success'
           })
           await this.initData()
         } else {
           this.$message({
-            message: '短链未失效',
+            message: `操作用户失败`,
             type: 'error'
           })
         }
       })
     },
 
-    // 取消选中
-    clickItem(e) {
-      e === this.radio ? this.radio = 0 : this.radio = e
-      if (this.radio === -1) {
-        this.updateExpireForm.expire = -1
-        this.dateDisable = true
-      } else {
-        this.updateExpireForm.expire = null
-        this.dateDisable = false
-      }
-    },
     // 页面大小变化或者页码变化时触发
     handleSizeChange() {
       this.initData()

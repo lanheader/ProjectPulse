@@ -81,6 +81,21 @@ const _formatDate = (timeStamp) => {
   const second = date.getSeconds() > 9 ? date.getSeconds() : '0' + date.getSeconds()
   return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second
 }
+function _formatToDesiredTime(localTimeString) {
+  // Create a new Date object from the local time string
+  const date = new Date(localTimeString)
+
+  // Extract and format the date and time components
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const hour = String(date.getHours()).padStart(2, '0')
+  const minute = String(date.getMinutes()).padStart(2, '0')
+  const second = String(date.getSeconds()).padStart(2, '0')
+
+  // Combine the components into a single string
+  return `${year}-${month}-${day} ${hour}:${minute}:${second}`
+}
 
 export {
   _checkMobile,
@@ -88,6 +103,7 @@ export {
   _isInteger,
   _isEmail,
   _isExternal,
-  _formatDate
+  _formatDate,
+  _formatToDesiredTime
 }
 

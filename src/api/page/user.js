@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: '/api/login/',
+    url: '/api/login',
     method: 'post',
     data
   })
@@ -25,14 +25,44 @@ export function logout() {
 
 export function UserList(params) {
   return request({
-    url: '/api/users/',
+    url: '/api/users',
     method: 'get',
     params: params
   })
 }
+
+export function UserDetail(params) {
+  return request({
+    url: `/api/users/${params}`,
+    method: 'get'
+  })
+}
+
+export function UserSubmit(data) {
+  return request({
+    url: '/api/users',
+    method: 'post',
+    data: data
+  })
+}
+export function UserUpdate(params) {
+  return request({
+    url: `/api/users/${params.id}`,
+    method: 'put',
+    data: params.data
+  })
+}
+
+export function UserDisable(params) {
+  return request({
+    url: `/api/users/${params}`,
+    method: 'delete'
+  })
+}
+
 export function RoleList(params) {
   return request({
-    url: '/api/role/',
+    url: '/api/role',
     method: 'get',
     params: params
   })

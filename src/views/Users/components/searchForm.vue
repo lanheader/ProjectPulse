@@ -5,54 +5,32 @@
     :inline="true"
     :model="searchForm"
     class="demo-form-inline"
-    :rules="searchFormRules"
   >
-    <el-col :xl="8" :lg="8" :md="12" :sm="12" :xs="24">
-      <el-form-item label="AccessKey" prop="accessKey">
-        <el-select
-          v-model="searchForm.accessKey"
-          clearable
-          filterable
-          placeholder="请选择服务名"
-        >
-          <el-option
-            v-for="item in accessKeyList"
-            :key="item.id"
-            :label="item.accessKey"
-            :value="item.id"
-          />
-        </el-select>
+    <el-col :xl="6" :lg="6" :md="12" :sm="12" :xs="24">
+      <el-form-item label="用户名" prop="username">
+        <el-input
+          v-model="searchForm.username"
+          placeholder="请输入用户名"
+        />
       </el-form-item>
     </el-col>
-    <el-col :xl="8" :lg="8" :md="12" :sm="12" :xs="24">
+    <el-col :xl="6" :lg="6" :md="12" :sm="12" :xs="24">
       <el-form-item label="源地址">
         <el-input
-          v-model="searchForm.originUrl"
-          placeholder="请输入源地址"
+          v-model="searchForm.display"
+          placeholder="请输入姓名"
         />
       </el-form-item>
     </el-col>
-    <el-col :xl="8" :lg="8" :md="8" :sm="12" :xs="24">
-      <el-form-item label="短地址">
+    <el-col :xl="6" :lg="6" :md="12" :sm="12" :xs="24">
+      <el-form-item label="手机号">
         <el-input
-          v-model="searchForm.shortUrl"
-          placeholder="请输入短地址"
+          v-model="searchForm.phone"
+          placeholder="请输入手机号"
         />
       </el-form-item>
     </el-col>
-    <el-col :xl="16" :lg="16" :md="16" :sm="12" :xs="24">
-      <el-form-item label="创建时间" prop="date" />
-      <el-date-picker
-        v-model="searchFormDate"
-        type="datetimerange"
-        :picker-options="createPickerOptions"
-        range-separator="至"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
-        align="right"
-      />
-    </el-col>
-    <el-col :xl="4" :lg="4" :md="24" :sm="24" :xs="24">
+    <el-col :xl="6" :lg="6" :md="12" :sm="12" :xs="24">
       <el-button type="primary" icon="el-icon-search" @click="initData">搜索</el-button>
     </el-col>
   </el-form>
@@ -64,23 +42,10 @@ export default {
     searchForm: {
       type: [Object],
       default: () => []
-    },
-    accessKeyList: {
-      type: [Array],
-      default: () => []
-    },
-    createPickerOptions: {
-      type: [Array],
-      default: () => []
     }
   },
   data() {
     return {
-      searchFormRules: {
-        accessKey: [
-          { required: true, message: '请选择accessKey', trigger: 'change' }
-        ]
-      }
     }
   },
   computed: {

@@ -73,7 +73,7 @@ const customRouter = [
       {
         path: 'resourceinfo',
         name: 'ResourceInfo',
-        component: () => import('@/views/ProjectUsers/index.vue'),
+        component: () => import('@/views/Resource/index.vue'),
         meta: {
           title: '资源列表',
           roles: ['admin', 'editor']

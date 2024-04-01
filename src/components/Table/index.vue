@@ -24,12 +24,12 @@
       <template v-else-if="column.type === 'status'" v-slot="{ row }">
         <el-tag
           :type="
-            column.statusOptions.find((option) => option.value === row.status).name
+            column.statusOptions.find((option) => option.value === row[column.name]).name
           "
           class="f12"
         >
           {{
-            column.statusOptions.find((option) => option.value === row.status).label
+            column.statusOptions.find((option) => option.value === row[column.name]).label
           }}
         </el-tag>
       </template>
@@ -52,7 +52,7 @@
   </el-table>
 </template>
 <script>
-import { _formatDate } from '@/utils/validate'
+import { _formatToDesiredTime } from '@/utils/validate'
 
 export default {
   name: 'LaplaceTable',
@@ -65,7 +65,7 @@ export default {
       } else if (date === -1) {
         return '永久'
       } else {
-        return _formatDate(date)
+        return _formatToDesiredTime(date)
       }
     }
   },
