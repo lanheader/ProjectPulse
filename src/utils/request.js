@@ -25,7 +25,7 @@ service.interceptors.request.use(
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
       // config.headers['X-Token'] = getToken()
-      config.headers.Authorization = getToken()
+      config.headers.Authorization = 'Bearer ' + getToken()
     }
     config.headers['Content-Type'] = 'application/json'
     config.headers['X-CSRFToken'] = getCookie()

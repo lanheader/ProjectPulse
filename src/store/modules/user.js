@@ -44,8 +44,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
-        commit('SET_TOKEN', data.data.access)
-        setToken(data.data.access)
+        commit('SET_TOKEN', data.access)
+        setToken(data.access)
         resolve()
       }).catch(error => {
         reject(error)
@@ -62,14 +62,12 @@ const actions = {
         if (!data) {
           reject('Verification failed, please Login again.')
         }
-
         const { roles, first_name, last_name, avatar, introduction } = data
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
           reject('getInfo: roles must be a non-null array!')
         }
-
         commit('SET_ROLES', roles)
         commit('SET_NAME', first_name + last_name)
         commit('SET_AVATAR', avatar)
@@ -131,13 +129,14 @@ const actions = {
     // reset visited views and cached views
     dispatch('tagsView/delAllViews', null, { root: true })
   },
+
   // 用户空间获取
   projects({ commit }) {
     return new Promise((resolve, reject) => {
       ProjectList().then(response => {
         const { data } = response
-        commit('SET_PROJECTS', data.data)
-        resolve(data.data)
+        commit('SET_PROJECTS', data)
+        resolve(data)
       }).catch(error => {
         reject(error)
       })

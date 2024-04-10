@@ -71,16 +71,16 @@ export default {
         page: this.pageNo
       })
 
-      if (res.data.data === null) {
+      if (res.data === null) {
         this.tableData = []
       } else {
-        this.tableData = res.data.data
+        this.tableData = res.data
       }
       // 如果data.totalSize为null 则赋值为0
-      if (res.data.count === null) {
+      if (res.count === null) {
         res.data.totalSize = 0
       } else {
-        this.total = res.data.count
+        this.total = res.count
       }
     },
     // 页面大小变化或者页码变化时触发

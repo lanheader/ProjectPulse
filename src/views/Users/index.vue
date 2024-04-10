@@ -201,12 +201,12 @@ export default {
         page: this.pageNo
       }
       const res = await UserList(params)
-      this.tableData = res.data.data
+      this.tableData = res.data
       // 如果data.totalSize为null 则赋值为0
-      if (res.data.count === null) {
+      if (res.count === null) {
         res.data.totalSize = 0
       } else {
-        this.total = res.data.count
+        this.total = res.count
       }
     },
 
@@ -292,20 +292,13 @@ export default {
         confirmButtonText: '确认',
         cancelButtonText: '关闭'
       }).then(async() => {
-        const res = await UserDisable(row.id)
+        await UserDisable(row.id)
         this.apiDialogFormVisible = false
-        if (res.code === 20000) {
-          this.$message({
-            message: `${res_msg}`,
-            type: 'success'
-          })
-          await this.initData()
-        } else {
-          this.$message({
-            message: `操作用户失败`,
-            type: 'error'
-          })
-        }
+        this.$message({
+          message: `${res_msg}`,
+          type: 'success'
+        })
+        await this.initData()
       })
     },
 
